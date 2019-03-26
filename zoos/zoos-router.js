@@ -46,4 +46,32 @@ router.get('/:id', (req, res) => {
   })
 })
 
+router.put('/:id', (req, res) => {
+  db('zoos').where({ id: req.params.id })
+  .update(req.body)
+  .then(zoo => {
+    if(zoo) {
+      res.status(200).json(zoo)
+    } else {
+      res.status(404).json({ message: 'Zoo not found' })
+    }
+  }).catch(err => {
+    res.status(500).json(err)
+  })
+})
+
+router.delete('/:id', (req, res) => {
+  db('zoos').where({ id: req.params.id })
+  .del()
+  .then(zoo => {
+    if(zoo) {
+      res.status(204).json(zoo)
+    } else {
+      res.status(404).json({ message: 'Zoo cannot be deleted' })
+    }
+  }).catch(err => {
+    res.status(500).json(err)
+  })
+})
+
 module.exports = router
